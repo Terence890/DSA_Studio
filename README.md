@@ -1,3 +1,4 @@
+[![Deno](https://github.com/Terence890/DSA_Studio/actions/workflows/deno.yml/badge.svg?event=workflow_run)](https://github.com/Terence890/DSA_Studio/actions/workflows/deno.yml)
 # DSA Studio (React + Vite + Tailwind + shadcn/ui)
 
 DSA Studio is an interactive learning workspace for Data Structures & Algorithms. It includes a Big-O playground, sorting visualizer with step engine, and a practice area with persisted progress. Built with React, Vite, Tailwind CSS, and shadcn/ui.

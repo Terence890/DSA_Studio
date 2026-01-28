@@ -1,0 +1,25 @@
+{
+  // Node-specific TypeScript configuration (used for tooling like Vite, build scripts, etc.)
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "types": ["node"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+  },
+  "include": [
+    "vite.config.*",
+    "vite.config.ts",
+    "scripts",
+    "build",
+    "node-declarations.d.ts",
+  ],
+  "exclude": ["node_modules", "dist"],
+}

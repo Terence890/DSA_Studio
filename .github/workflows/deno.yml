@@ -39,4 +39,12 @@ jobs:
         run: deno lint
 
       - name: Run tests
-        run: deno test -A
+        run: |
+          OUTPUT=$(deno test -A 2>&1) || EXIT_CODE=$?
+          echo "$OUTPUT"
+          if [ "${EXIT_CODE:-0}" -eq 1 ] && echo "$OUTPUT" | grep -q "No test modules found"; then
+            echo "No test files found, skipping tests"
+            exit 0
+          elif [ "${EXIT_CODE:-0}" -ne 0 ]; then
+            exit $EXIT_CODE
+          fi

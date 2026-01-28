@@ -80,7 +80,7 @@ function App() {
   const pageTitle =
     navConfig.find((item) => item.id === activePage)?.title || "Dashboard";
 
-  const mobileNavItems = navConfig.map(({ path, label }) => ({ path, label }));
+  
 
   return (
     <div className="min-h-screen bg-background text-foreground">

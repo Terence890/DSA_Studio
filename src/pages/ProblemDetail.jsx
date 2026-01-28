@@ -19,10 +19,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+
 import { fetchProblemBySlug } from "@/lib/leetcodeClient";
 import { usePracticeStore } from "@/lib/store/practiceStore";
-import { cn } from "@/lib/utils";
+
 
 const fallbackMeta = {
   "two-sum": {
@@ -127,7 +127,7 @@ export default function ProblemDetail() {
               size="sm"
               className="gap-2"
               onClick={() =>
-                window.open(leetUrl, "_blank", "noopener,noreferrer")
+                globalThis.open(leetUrl, "_blank", "noopener,noreferrer")
               }
             >
               <PlayCircle className="size-4" />
@@ -220,7 +220,7 @@ export default function ProblemDetail() {
                 size="sm"
                 className="gap-2"
                 onClick={() =>
-                  window.open(leetUrl, "_blank", "noopener,noreferrer")
+                  globalThis.open(leetUrl, "_blank", "noopener,noreferrer")
                 }
               >
                 <PlayCircle className="size-4" />

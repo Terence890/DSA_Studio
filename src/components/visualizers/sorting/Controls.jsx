@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Gauge, Pause, Play, Shuffle, SlidersHorizontal, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";

@@ -63,7 +63,7 @@ export function insertionSortSteps(input) {
   const arr = clone(input);
   const steps = [];
   for (let i = 1; i < arr.length; i++) {
-    let key = arr[i];
+    const key = arr[i];
     let j = i - 1;
     pushStep(steps, "compare", [j, i], arr);
     while (j >= 0 && arr[j] > key) {
@@ -227,7 +227,7 @@ export function shuffleArray(input) {
  * Helper to get a copy of array from steps end state.
  */
 export function applySteps(initial, steps) {
-  let arr = clone(initial);
+  const arr = clone(initial);
   for (const step of steps) {
     if (step.type === "swap" && step.indices.length === 2) {
       const [i, j] = step.indices;

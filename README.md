@@ -35,18 +35,25 @@ DSA Studio is an interactive learning workspace for Data Structures & Algorithms
 - `vite.config.js` includes `allowedHosts` and `ngrok-skip-browser-warning` header.
 - HMR uses `wss` with `clientPort: 443`. When tunneling, open the ngrok URL (optionally append `?ngrok-skip-browser-warning=1`).
 
-## Screenshot gallery
-- Dashboard: `screenshots/Dashboard.png`
-- Big-O Playground: `screenshots/Big-O.png`
-- Sorting Visualizer: `screenshots/Sorting-visualizer.png`
-- Practice Mode: `screenshots/Practice-mode.png`
-- Curriculum: `screenshots/Curriculum.png`
+## Screenshot gallery (inline)
+Dashboard  
+![Dashboard](screenshots/Dashboard.png)
 
-To view locally, open the images in the `screenshots/` folder.
+Big-O Playground  
+![Big-O Playground](screenshots/Big-O.png)
+
+Sorting Visualizer  
+![Sorting Visualizer](screenshots/Sorting-visualizer.png)
+
+Practice Mode  
+![Practice Mode](screenshots/Practice-mode.png)
+
+Curriculum  
+![Curriculum](screenshots/Curriculum.png)
 
 ## Getting started
-1) Install deps: `pnpm install`
-2) Run dev server: `pnpm dev`
+1) Install deps: `pnpm install`  
+2) Run dev server: `pnpm dev`  
 3) Open `http://localhost:5173` (or your ngrok URL with skip-warning query if needed).
 
 ## Notes / next steps

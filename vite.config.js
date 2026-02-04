@@ -14,7 +14,7 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
-    allowedHosts: ["all", "unuxorious-delois-campanulate.ngrok-free.dev"],
+    allowedHosts: ["all"],
     headers: {
       "ngrok-skip-browser-warning": "1",
     },

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Lightbulb, Sparkles, BookOpenCheck, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 

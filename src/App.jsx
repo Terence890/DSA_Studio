@@ -98,6 +98,7 @@ function App() {
   const pageTitle =
     navConfig.find((item) => item.id === activePage)?.title || "Dashboard";
 
+<<<<<<< HEAD
   const commandActions = navConfig.map(({ path, label, title }) => ({
     label,
     group: "Navigate",
@@ -105,6 +106,9 @@ function App() {
     shortcut: "",
     onSelect: () => navigate(path),
   }));
+=======
+  
+>>>>>>> 540f99e8699f538db6999126c7af22bf465602ad
 
   return (
     <div className="min-h-screen bg-background text-foreground">

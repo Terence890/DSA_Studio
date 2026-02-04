@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AlarmClock,
   BookOpenCheck,
@@ -423,7 +423,7 @@ export default function Practice() {
                   isSolved && "border-emerald-400/60",
                 )}
                 onClick={() =>
-                  window.open(leetUrl, "_blank", "noopener,noreferrer")
+                  globalThis.open(leetUrl, "_blank", "noopener,noreferrer")
                 }
               >
                 <CardHeader className="pb-3">
@@ -502,7 +502,7 @@ export default function Practice() {
                       className="gap-1"
                       onClick={(e) => {
                         e.stopPropagation();
-                        window.open(leetUrl, "_blank", "noopener,noreferrer");
+                        globalThis.open(leetUrl, "_blank", "noopener,noreferrer");
                       }}
                     >
                       <PlayCircle className="size-4" />

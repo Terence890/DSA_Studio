@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -24,6 +24,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchProblemBySlug } from "@/lib/leetcodeClient";
 import { usePracticeStore } from "@/lib/store/practiceStore";
+
+>>>>>>> 540f99e8699f538db6999126c7af22bf465602ad
 
 const fallbackMeta = {
   "two-sum": {
@@ -151,7 +153,7 @@ export default function ProblemDetail() {
               size="sm"
               className="gap-2"
               onClick={() =>
-                window.open(leetUrl, "_blank", "noopener,noreferrer")
+                globalThis.open(leetUrl, "_blank", "noopener,noreferrer")
               }
             >
               <PlayCircle className="size-4" />
@@ -282,7 +284,7 @@ export default function ProblemDetail() {
                 size="sm"
                 className="gap-2"
                 onClick={() =>
-                  window.open(leetUrl, "_blank", "noopener,noreferrer")
+                  globalThis.open(leetUrl, "_blank", "noopener,noreferrer")
                 }
               >
                 <PlayCircle className="size-4" />

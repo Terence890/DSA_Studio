@@ -41,13 +41,9 @@ export default function useProblems({ difficulty, limit = 12, skip = 0 } = {}) {
   }, [difficulty, limit, skip]);
 
   useEffect(() => {
-    let mounted = true;
     (async () => {
       await load();
     })();
-    return () => {
-      mounted = false;
-    };
   }, [load]);
 
   return {

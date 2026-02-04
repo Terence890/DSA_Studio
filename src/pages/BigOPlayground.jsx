@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { LineChart, PlayCircle, Timer } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 

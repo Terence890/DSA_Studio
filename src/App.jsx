@@ -11,6 +11,7 @@ import {
 import { Menu, Moon, Sun, X } from "lucide-react";
 
 import Sidebar from "@/components/layout/Sidebar";
+import CommandPalette from "@/components/layout/CommandPalette";
 
 import Dashboard from "@/pages/Dashboard";
 
@@ -29,6 +30,7 @@ function App() {
     () => localStorage.getItem("dsa-theme") || "dark",
   );
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isCmdOpen, setIsCmdOpen] = useState(false);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -39,9 +41,25 @@ function App() {
 
   useEffect(() => {
     setIsMobileNavOpen(false);
+    setIsCmdOpen(false);
   }, [location.pathname]);
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+
+  useEffect(() => {
+    const handler = (e) => {
+      const isK = e.key?.toLowerCase?.() === "k";
+      if (isK && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsCmdOpen((v) => !v);
+      }
+      if (e.key === "Escape") {
+        setIsCmdOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
 
   const navConfig = [
     { id: "dashboard", path: "/", label: "Dashboard", title: "Dashboard" },
@@ -80,10 +98,23 @@ function App() {
   const pageTitle =
     navConfig.find((item) => item.id === activePage)?.title || "Dashboard";
 
-  const mobileNavItems = navConfig.map(({ path, label }) => ({ path, label }));
+  const commandActions = navConfig.map(({ path, label, title }) => ({
+    label,
+    group: "Navigate",
+    hint: title,
+    shortcut: "",
+    onSelect: () => navigate(path),
+  }));
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <CommandPalette
+        open={isCmdOpen}
+        onClose={() => setIsCmdOpen(false)}
+        actions={commandActions}
+        title="Jump to module"
+        placeholder="Search (e.g., Big-O, Sorting, Practice)"
+      />
       <div className="mx-auto flex max-w-[1900px] flex-col gap-4 px-4 py-4 lg:flex-row lg:gap-6 lg:px-8">
         <Sidebar
           className="hidden lg:flex"

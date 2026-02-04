@@ -11,6 +11,7 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import {
   Card,
   CardContent,
@@ -19,10 +20,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchProblemBySlug } from "@/lib/leetcodeClient";
 import { usePracticeStore } from "@/lib/store/practiceStore";
-import { cn } from "@/lib/utils";
 
 const fallbackMeta = {
   "two-sum": {
@@ -56,6 +57,7 @@ export default function ProblemDetail() {
   const [problem, setProblem] = useState(null);
   const [error, setError] = useState(null);
   const [codeTab, setCodeTab] = useState(null);
+  const [activeTab, setActiveTab] = useState("prompt");
 
   const solvedIds = usePracticeStore((s) => s.solvedIds);
   const toggleSolved = usePracticeStore((s) => s.toggleSolved);
@@ -78,7 +80,9 @@ export default function ProblemDetail() {
         if (data) {
           setProblem(data);
           setCodeTab(
-            data.codeSnippets?.[0]?.slug || data.codeSnippets?.[0]?.lang || null,
+            data.codeSnippets?.[0]?.slug ||
+              data.codeSnippets?.[0]?.lang ||
+              null,
           );
         } else if (fallbackUsed && fallbackMeta[slug]) {
           setProblem(fallbackMeta[slug]);
@@ -100,8 +104,28 @@ export default function ProblemDetail() {
 
   const isSolved = solvedIds?.has?.(slug);
 
+  const snippets = problem?.codeSnippets ?? [];
+  const currentSnippet = useMemo(() => {
+    if (snippets.length > 0) {
+      return (
+        snippets.find((c) => (c.slug || c.lang) === codeTab) || snippets[0]
+      );
+    }
+    if (problem?.code) {
+      return { code: problem.code, lang: "JavaScript" };
+    }
+    return null;
+  }, [snippets, codeTab, problem]);
+
   return (
     <main className="w-full space-y-6 p-6">
+      <Breadcrumb
+        items={[
+          { label: "Practice", onClick: () => navigate("/practice") },
+          { label: problem?.title || slug || "Problem" },
+        ]}
+        className="mb-2"
+      />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
@@ -160,57 +184,95 @@ export default function ProblemDetail() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {loading && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Loader2 className="size-4 animate-spin" />
-              Loading problem…
-            </div>
-          )}
-          {error && !loading && (
-            <div className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-              <XCircle className="size-4" />
-              {error?.message || "Failed to load problem."}
-            </div>
-          )}
-          {problem && problem.content && (
-            <div className="prose prose-sm max-w-none dark:prose-invert">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: problem.content,
-                }}
-              />
-            </div>
-          )}
-          {!problem?.content && problem?.prompt && (
-            <p className="text-sm text-muted-foreground">{problem.prompt}</p>
-          )}
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList>
+              <TabsTrigger value="prompt">Prompt</TabsTrigger>
+              <TabsTrigger value="hints">Hints</TabsTrigger>
+              <TabsTrigger value="solution">Solution</TabsTrigger>
+              <TabsTrigger value="complexity">Complexity</TabsTrigger>
+            </TabsList>
 
-          {problem && (
-            <div className="space-y-2 rounded-lg border border-border/60 bg-card/60 p-3 text-sm">
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                Hints
-              </p>
-              <ul className="space-y-1 text-muted-foreground">
-                {(problem.hints || []).map((h) => (
-                  <li key={h} className="flex items-start gap-2">
-                    <span className="mt-1 size-1.5 rounded-full bg-primary/70" />
-                    <span>{h}</span>
-                  </li>
-                ))}
-                {(!problem.hints || problem.hints.length === 0) && (
-                  <li className="text-xs text-muted-foreground">
-                    No hints available.
-                  </li>
-                )}
-              </ul>
-              {problem.complexity && (
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Lightbulb className="size-4" />
-                  {problem.complexity}
+            <TabsContent value="prompt">
+              {loading && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="size-4 animate-spin" />
+                  Loading problem…
                 </div>
               )}
-            </div>
-          )}
+              {error && !loading && (
+                <div className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                  <XCircle className="size-4" />
+                  {error?.message || "Failed to load problem."}
+                </div>
+              )}
+              {problem && problem.content && (
+                <div className="prose prose-sm max-w-none dark:prose-invert">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: problem.content,
+                    }}
+                  />
+                </div>
+              )}
+              {!problem?.content && problem?.prompt && (
+                <p className="text-sm text-muted-foreground">
+                  {problem.prompt}
+                </p>
+              )}
+            </TabsContent>
+
+            <TabsContent value="hints">
+              <div className="space-y-2 text-sm">
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Hints
+                </p>
+                <ul className="space-y-1 text-muted-foreground">
+                  {(problem?.hints || []).map((h) => (
+                    <li key={h} className="flex items-start gap-2">
+                      <span className="mt-1 size-1.5 rounded-full bg-primary/70" />
+                      <span>{h}</span>
+                    </li>
+                  ))}
+                  {(!problem?.hints || problem.hints.length === 0) && (
+                    <li className="text-xs text-muted-foreground">
+                      No hints available.
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="solution">
+              {snippets.length > 0 && (
+                <div className="flex flex-wrap gap-2 pb-3">
+                  {snippets.map((c) => {
+                    const id = c.slug || c.lang;
+                    return (
+                      <Button
+                        key={id}
+                        variant={codeTab === id ? "secondary" : "outline"}
+                        size="sm"
+                        className="text-xs"
+                        onClick={() => setCodeTab(id)}
+                      >
+                        {c.lang}
+                      </Button>
+                    );
+                  })}
+                </div>
+              )}
+              <pre className="whitespace-pre-wrap rounded-lg bg-muted/50 p-3 font-mono text-xs leading-relaxed text-foreground">
+                {currentSnippet?.code || "No code snippet available."}
+              </pre>
+            </TabsContent>
+
+            <TabsContent value="complexity">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Lightbulb className="size-4" />
+                {problem?.complexity || "—"}
+              </div>
+            </TabsContent>
+          </Tabs>
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-3">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -241,41 +303,6 @@ export default function ProblemDetail() {
           </div>
         </CardFooter>
       </Card>
-
-      {problem?.codeSnippets?.length > 0 && (
-        <Card className="border-border/70">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <PlayCircle className="size-4 text-primary" />
-              Code snippets
-            </CardTitle>
-            <CardDescription>Switch language tabs below.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex flex-wrap gap-2">
-              {problem.codeSnippets.map((c) => {
-                const id = c.slug || c.lang;
-                return (
-                  <Button
-                    key={id}
-                    variant={codeTab === id ? "secondary" : "outline"}
-                    size="sm"
-                    className="text-xs"
-                    onClick={() => setCodeTab(id)}
-                  >
-                    {c.lang}
-                  </Button>
-                );
-              })}
-            </div>
-            <pre className="whitespace-pre-wrap rounded-lg bg-muted/50 p-3 font-mono text-xs leading-relaxed text-foreground">
-              {problem.codeSnippets.find((c) => (c.slug || c.lang) === codeTab)
-                ?.code ||
-                problem.codeSnippets[0].code}
-            </pre>
-          </CardContent>
-        </Card>
-      )}
     </main>
   );
 }

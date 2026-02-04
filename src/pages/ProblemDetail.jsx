@@ -25,8 +25,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchProblemBySlug } from "@/lib/leetcodeClient";
 import { usePracticeStore } from "@/lib/store/practiceStore";
 
->>>>>>> 540f99e8699f538db6999126c7af22bf465602ad
-
 const fallbackMeta = {
   "two-sum": {
     title: "Two Sum",
